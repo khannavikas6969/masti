@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Links</title>
+    <style>
+        /* Styles here */
+    </style>
+</head>
+<body>
+    <h1><b><u><center>Add More Links</u></b></center></h1>
+    
+    <div class="options">
+        <a href="links.html">Go to Links</a>
+    </div>
+
+    <div class="gallery" id="links">
+        <!-- Images with hyperlinked captions will be added here dynamically -->
+    </div>
+
+    <div>
+        
+        <form id="imageForm">
+            <label for="imageUrl">Image URL:</label><br>
+            <input type="text" id="imageUrl" name="imageUrl" required><br><br>
+            
+            <label for="linkUrl">Link URL:</label><br>
+            <input type="text" id="linkUrl" name="linkUrl" required><br><br>
+            
+            <label for="caption">Caption:</label><br>
+            <input type="text" id="caption" name="caption" required><br><br>
+            
+            <button type="submit">Add Image</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            var imageUrl = document.getElementById('imageUrl').value;
+            var linkUrl = document.getElementById('linkUrl').value;
+            var caption = document.getElementById('caption').value;
+
+            // Create image element
+            var img = document.createElement('img');
+            img.src = imageUrl;
+
+            // Create link element
+            var link = document.createElement('a');
+            link.href = linkUrl;
+            link.appendChild(img);
+
+            // Create caption element
+            var captionDiv = document.createElement('div');
+            captionDiv.textContent = caption;
+            captionDiv.classList.add('caption');
+
+            // Create container for image and caption
+            var container = document.createElement('div');
+            container.classList.add('image-container');
+            container.appendChild(link);
+            container.appendChild(captionDiv);
+
+            // Store link data locally
+            var linkData = {
+                imageUrl: imageUrl,
+                linkUrl: linkUrl,
+                caption: caption
+            };
+            var links = JSON.parse(localStorage.getItem('links')) || [];
+            links.push(linkData);
+            localStorage.setItem('links', JSON.stringify(links));
+
+            // Reset form
+            event.target.reset();
+        });
+    </script>
+</body>
+</html>

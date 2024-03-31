@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Links</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 300%;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 200%;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .image-container {
+            text-align: center;
+            margin: 10px;
+            position: relative;
+        }
+        img {
+            max-width: 100%; /* Make images scalable according to device size */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin-bottom: 5px;
+        }
+        .caption {
+            font-weight: bold;
+        }
+        .caption a {
+            text-decoration: underline;
+        }
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Links</h1>
+    
+    <div class="options">
+        <a href="add_links.html">Add More Links</a>
+    </div>
+
+    <div class="gallery" id="links">
+        <!-- Images with hyperlinked captions will be added here dynamically -->
+    </div>
+
+    <script>
+        // Retrieve and display stored links
+        var links = JSON.parse(localStorage.getItem('links')) || [];
+        var gallery = document.getElementById('links');
+
+        links.forEach(function(linkData, index) {
+            // Create image element
+            var img = document.createElement('img');
+            img.src = linkData.imageUrl;
+
+            // Create caption element
+            var captionLink = document.createElement('a');
+            captionLink.href = linkData.linkUrl;
+            captionLink.textContent = linkData.caption;
+
+            // Create caption div
+            var captionDiv = document.createElement('div');
+            captionDiv.appendChild(captionLink);
+            captionDiv.classList.add('caption');
+
+            // Create delete button
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('delete-button');
+
+            // Create container for image, caption, and delete button
+            var container = document.createElement('div');
+            container.classList.add('image-container');
+            container.appendChild(img);
+            container.appendChild(captionDiv);
+            container.appendChild(deleteButton);
+
+            // Add event listener to delete button
+            deleteButton.addEventListener('click', function() {
+                // Remove link from localStorage
+                links.splice(index, 1);
+                localStorage.setItem('links', JSON.stringify(links));
+
+                // Remove container from gallery
+                container.remove();
+            });
+
+            // Add container to gallery
+            gallery.appendChild(container);
+        });
+    </script>
+</body>
+</html>
